@@ -1,0 +1,48 @@
+:: BatchGotAdmin
+:-------------------------------------
+REM  --> Check for permissions
+>nul 2>&1 "%SYSTEMROOT%\system32\cacls.exe" "%SYSTEMROOT%\system32\config\system"
+
+REM --> If error flag set, we do not have admin.
+if '%errorlevel%' NEQ '0' (
+    echo Requesting administrative privileges...
+    goto UACPrompt
+) else ( goto gotAdmin )
+
+:UACPrompt
+    echo Set UAC = CreateObject^("Shell.Application"^) > "%temp%\getadmin.vbs"
+    set params = %*:"=""
+    echo UAC.ShellExecute "cmd.exe", "/c %~s0 %params%", "", "runas", 1 >> "%temp%\getadmin.vbs"
+
+    "%temp%\getadmin.vbs"
+    del "%temp%\getadmin.vbs"
+    exit /B
+
+:gotAdmin
+
+    REM ****Application is Starting****
+
+    cd <PROJECT_FOLDER>
+
+    start "Configurations" configuration.bat
+
+    echo please wait for HDFS to finish loading... then press a key...
+    TIMEOUT 10
+
+    TASKKILL /F /FI "WINDOWTITLE eq Administrator: Configurations"
+
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /user
+    TIMEOUT 5
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /tmp
+    TIMEOUT 4
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -mkdir -p /user/input
+    TIMEOUT 4
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put src/main/resources/input.txt /user/input
+    TIMEOUT 10
+
+    start "Connections" connections.bat
+    TIMEOUT 10
+
+    TASKKILL /F /FI "WINDOWTITLE eq Administrator: Connections"
+    TIMEOUT 10
+
