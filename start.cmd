@@ -22,7 +22,7 @@ if '%errorlevel%' NEQ '0' (
 
     REM ****Application is Starting****
 
-    cd <PROJECT_FOLDER>
+    cd <PROJECT_DIRECTORY>
 
     start "Configurations" configuration.bat
 
@@ -46,3 +46,9 @@ if '%errorlevel%' NEQ '0' (
     TASKKILL /F /FI "WINDOWTITLE eq Administrator: Connections"
     TIMEOUT 10
 
+    start cmd.exe /c %HADOOP_HOME%/bin/hadoop jar target/Ex2-1.0-SNAPSHOT-jar-with-dependencies.jar
+
+    echo please wait till Map Reduce completes
+    PAUSE
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -get /user/output/part-r-00000 output.txt
+    TIMEOUT 10
