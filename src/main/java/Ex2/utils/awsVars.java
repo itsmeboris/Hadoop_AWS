@@ -4,11 +4,16 @@ import com.amazonaws.services.elasticmapreduce.model.HadoopJarStepConfig;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.model.InstanceType;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.StringTokenizer;
+
 
 public class awsVars {
     public static final String EX2_JAR = "Ex2.jar";
-    public static final String INPUT_BUCKET_NAME = "/user/input";
-    public static final String OUTPUT_BUCKET_NAME = "/user/output";
+    public static final String INPUT_BUCKET_NAME = "/user/input/";
+    public static final String OUTPUT_BUCKET_NAME = "/user/output/";
+    public static final String PATH = "bible+shakes.nopunc";
     public static final String APPLICATION_CODE_BUCKET_NAME = "apllication-code-bucket-dsp202";
     public static final String IAM_PROFILE_NAME = "Application";
     public static final String KEY_PAIR_NAME = "Boris";
@@ -17,21 +22,29 @@ public class awsVars {
     public static final String MAIN_CLASS = "Ex2.bigrams.main";
     public static final String JOB_NAME = "Pairs";
     public static final int NUMBER_REDUCERS = 1;
+    public static final String ENG = "eng";
+    public static final String HEB = "heb";
 
-    public static String filterStopWords(String text, String language) {
-        int length = text.length();
-        //for each stop.txt word - delete is from the tweet text
-        text = ' ' + text + ' ';
-        for (String word : ENGLISH_STOP_WORDS) {
-            text = text.replaceAll(" " + word + " ", " ");
-            text = text.replaceAll(" " + word.toUpperCase() + " ", " ");
-            while (length != text.length()) {
-                length = text.length();
+    public static String[] filterStopWords(String text, String language) {
+        text = " " + text + " ";
+        text = text.toLowerCase();
+        text = text.replaceAll("[^a-z]+", " ");
+        if(language == ENG) {
+            for (String word : ENGLISH_STOP_WORDS) {
                 text = text.replaceAll(" " + word + " ", " ");
-                text = text.replaceAll(" " + word.toUpperCase() + " ", " ");
+            }
+        } else {
+            // TODO - need to implement for hebrew
+            for (String word : ENGLISH_STOP_WORDS) {
+                text = text.replaceAll(" " + word + " ", " ");
             }
         }
-        return text.substring(1, (text.length()-1));
+        text = text.replaceAll("^\\s+", "");
+        StringTokenizer st = new StringTokenizer(text);
+        ArrayList<String> result = new ArrayList<>();
+        while (st.hasMoreTokens())
+            result.add(st.nextToken());
+        return Arrays.copyOf(result.toArray(),result.size(),String[].class);
     }
 
     public static String getS3Address(String input){
@@ -40,7 +53,7 @@ public class awsVars {
         return output.toString();
     }
 
-    static final String[] ENGLISH_STOP_WORDS = {"a", "about", "above", "across", "after",
+    public static final String[] ENGLISH_STOP_WORDS = {"a", "about", "above", "across", "after",
             "afterwards", "again", "against", "all", "almost", "alone", "along", "already",
             "also", "although", "always", "am", "among", "amongst", "amoungst", "amount", "an",
             "and", "another", "any", "anyhow", "anyone", "anything", "anyway", "anywhere", "are",

@@ -1,5 +1,4 @@
 package Ex2.bigrams;
-import Ex2.bigrams.Pairs;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.util.ToolRunner;
 

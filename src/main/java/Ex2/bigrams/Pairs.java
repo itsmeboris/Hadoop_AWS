@@ -1,6 +1,7 @@
 package Ex2.bigrams;
 
 import Ex2.utils.TextPair;
+import Ex2.utils.awsVars;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -26,19 +27,8 @@ public class Pairs extends Configured implements Tool {
 
     public final static IntWritable ONE = new IntWritable(1);
 
-    private Path inputPath = new Path(INPUT_BUCKET_NAME);
-    private Path outputPath = new Path(OUTPUT_BUCKET_NAME);
-
-    public static String[] words(String text) {
-        text = text.toLowerCase();
-        text = text.replaceAll("[^a-z]+", " ");
-        text = text.replaceAll("^\\s+", "");
-        StringTokenizer st = new StringTokenizer(text);
-        ArrayList<String> result = new ArrayList<>();
-        while (st.hasMoreTokens())
-            result.add(st.nextToken());
-        return Arrays.copyOf(result.toArray(),result.size(),String[].class);
-    }
+    private Path inputPath = new Path(INPUT_BUCKET_NAME+PATH);
+    private Path outputPath = new Path(OUTPUT_BUCKET_NAME+PATH);
 
     public static class PairsMapper extends Mapper<LongWritable, Text, TextPair, IntWritable> {
 
@@ -55,7 +45,7 @@ public class Pairs extends Configured implements Tool {
         public void map(LongWritable key, Text value, Context context)
                 throws java.io.IOException, InterruptedException {
 
-            String[] tokens = Pairs.words(value.toString());
+            String[] tokens = filterStopWords(value.toString(), ENG);
 
             for (int i = 0; i < tokens.length-1; i++) {
                 pair.set(tokens[i], tokens[i+1]);

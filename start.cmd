@@ -22,22 +22,25 @@ if '%errorlevel%' NEQ '0' (
 
     REM ****Application is Starting****
 
-    cd <PROJECT_DIRECTORY>
+    cd <Project location>
 
     start "Configurations" configuration.bat
 
     echo please wait for HDFS to finish loading... then press a key...
-    TIMEOUT 10
 
     TASKKILL /F /FI "WINDOWTITLE eq Administrator: Configurations"
+    TIMEOUT 10
+
+    start cmd.exe /c hdfs dfsadmin -safemode leave
+    TIMEOUT 5
 
     start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /user
-    TIMEOUT 5
+    TIMEOUT 10
     start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /tmp
-    TIMEOUT 4
+    TIMEOUT 10
     start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -mkdir -p /user/input
-    TIMEOUT 4
-    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put src/main/resources/input.txt /user/input
+    TIMEOUT 10
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put src/main/resources/bible+shakes.nopunc /user/input
     TIMEOUT 10
 
     start "Connections" connections.bat
