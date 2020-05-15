@@ -22,7 +22,7 @@ if '%errorlevel%' NEQ '0' (
 
     REM ****Application is Starting****
 
-    cd <Project location>
+    cd C:\Users\boris\Ex2
 
     start "Configurations" configuration.bat
 
@@ -53,5 +53,5 @@ if '%errorlevel%' NEQ '0' (
 
     echo please wait till Map Reduce completes
     PAUSE
-    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -get /user/output/part-r-00000 output.txt
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -get /user/output/bible+shakes.nopunc/part-r-00000 output.txt
     TIMEOUT 10
