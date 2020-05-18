@@ -1,7 +1,6 @@
 package Ex2.bigrams;
 
 import Ex2.utils.TextPair;
-import Ex2.utils.awsVars;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
@@ -17,9 +16,6 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.StringTokenizer;
 
 import static Ex2.utils.awsVars.*;
 
@@ -29,6 +25,8 @@ public class Pairs extends Configured implements Tool {
 
     private Path inputPath = new Path(INPUT_BUCKET_NAME+PATH);
     private Path outputPath = new Path(OUTPUT_BUCKET_NAME+PATH);
+
+    private final static String ASTERISK = "*";
 
     public static class PairsMapper extends Mapper<LongWritable, Text, TextPair, IntWritable> {
 
@@ -88,7 +86,7 @@ public class Pairs extends Configured implements Tool {
 
         job.setMapOutputKeyClass(TextPair.class);
         job.setMapOutputValueClass(IntWritable.class);
-
+        
         job.setOutputKeyClass(TextPair.class);
         job.setOutputValueClass(IntWritable.class);
 

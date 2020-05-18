@@ -38,7 +38,7 @@ public class main {
        //        %HADOOP_HOME%/bin/hadoop jar target/Ex2-1.0-SNAPSHOT-jar-with-dependencies.jar
 
         try {
-           int res = ToolRunner.run(new Configuration(), new Pairs(), args);
+           int res = ToolRunner.run(new Configuration(), new GoogleNgramsMain(), args);
            System.exit(res);
        } catch (Exception e) {
            e.printStackTrace();

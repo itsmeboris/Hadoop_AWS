@@ -65,7 +65,7 @@ public class TextPair implements WritableComparable<TextPair> {
 
     @Override
     public String toString() {
-        return first + " " + second;
+        return first + "\t" + second;
     }
 
     public int compareTo(TextPair tp) {

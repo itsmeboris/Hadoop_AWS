@@ -1,5 +1,6 @@
 package Ex2.utils;
 
+import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.core.ResponseInputStream;
 import software.amazon.awssdk.core.sync.RequestBody;
 import software.amazon.awssdk.core.sync.ResponseTransformer;
@@ -23,7 +24,6 @@ public class AWS {
     private Region region = REGION;
 
     public AWS(){
-        initEC2();
         initS3();
     }
 
@@ -36,6 +36,7 @@ public class AWS {
     public void initS3(){
         s3 = S3Client.builder()
                 .region(region)
+                .credentialsProvider(ProfileCredentialsProvider.builder().build())
                 .build();
     }
 

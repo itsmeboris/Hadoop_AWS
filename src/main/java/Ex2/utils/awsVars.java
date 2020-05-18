@@ -11,9 +11,10 @@ import java.util.StringTokenizer;
 
 public class awsVars {
     public static final String EX2_JAR = "Ex2.jar";
+    public static final String INPUT_LOCAL_LOCATION = "E:\\Download\\Compressed\\";
     public static final String INPUT_BUCKET_NAME = "/user/input/";
     public static final String OUTPUT_BUCKET_NAME = "/user/output/";
-    public static final String PATH = "bible+shakes.nopunc";
+    public static final String PATH = "googlebooks-eng-all-2gram-20120701-a_";
     public static final String APPLICATION_CODE_BUCKET_NAME = "apllication-code-bucket-dsp202";
     public static final String IAM_PROFILE_NAME = "Application";
     public static final String KEY_PAIR_NAME = "Boris";
@@ -45,6 +46,15 @@ public class awsVars {
         while (st.hasMoreTokens())
             result.add(st.nextToken());
         return Arrays.copyOf(result.toArray(),result.size(),String[].class);
+    }
+
+    public static boolean checkStopWords(String[] texts){
+        for(String text: texts){
+            if(Arrays.asList(ENGLISH_STOP_WORDS).contains(text)){
+                return false;
+            }
+        }
+        return true;
     }
 
     public static String getS3Address(String input){

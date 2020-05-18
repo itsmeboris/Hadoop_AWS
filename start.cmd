@@ -34,14 +34,16 @@ if '%errorlevel%' NEQ '0' (
     start cmd.exe /c hdfs dfsadmin -safemode leave
     TIMEOUT 5
 
-    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /user
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /user/output
     TIMEOUT 10
     start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -rm -R /tmp
     TIMEOUT 10
     start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -mkdir -p /user/input
     TIMEOUT 10
-    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put src/main/resources/bible+shakes.nopunc /user/input
-    TIMEOUT 10
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put E:\Download\Compressed\1-gram\googlebooks-eng-all-1gram-20120701-a /user/input
+    PAUSE
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -put E:\Download\Compressed\2-gram\googlebooks-eng-all-2gram-20120701-a_ /user/input
+    PAUSE
 
     start "Connections" connections.bat
     TIMEOUT 10
@@ -53,5 +55,5 @@ if '%errorlevel%' NEQ '0' (
 
     echo please wait till Map Reduce completes
     PAUSE
-    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -get /user/output/bible+shakes.nopunc/part-r-00000 output.txt
+    start cmd.exe /c %HADOOP_HOME%\bin\hadoop fs -get /user/output/googlebooks-eng-all-1gram-20120701-a/part-r-00000 output.txt
     TIMEOUT 10
